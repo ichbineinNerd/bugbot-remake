@@ -1,13 +1,12 @@
 const Discord = require('discord.js');
-const fs = require("fs");
 const bot = new Discord.Client();
-const config = require("./config.json");
-const prefix = config.prefix;
-bot.commands = new Discord.Collection();
-let cooldown = new Set();
-let cdseconds = 15;
-fs.readdir("./commands/", (err, files) => {
+const fs = require("fs");
 
+const config = require("./config.json");
+bot.commands = new Discord.Collection();
+const prefix = config.prefix;
+
+fs.readdir("./commands/", (err, files) => {
     if (err) console.log(err);
 
     let jsfile = files.filter(f => f.split(".").pop() === "js")
@@ -15,13 +14,11 @@ fs.readdir("./commands/", (err, files) => {
         console.log("Couldn't find commands.");
         return;
     }
-
     jsfile.forEach((f, i) => {
         let props = require(`./commands/${f}`);
         console.log(`${f} loaded`);
         bot.commands.set(props.help.name, props);
     });
-
 });
 
 bot.on('ready', () => {
@@ -31,8 +28,7 @@ bot.on('ready', () => {
 bot.on("message", msg => {
     if (msg.author.bot) return;
     if (msg.channel.type === "dm") return;
-	
-	if (!msg.content.startsWith(config.prefix)) return;
+    if (!msg.content.startsWith(config.prefix)) return;
 
     let msgArray = msg.content.split(" ");
     let cmd = msgArray[0].toLocaleLowerCase();
@@ -46,8 +42,6 @@ bot.on("message", msg => {
     }
 });
 
-  
-  
 bot.on('error', console.error);
 const db = require('quick.db');
 bot.on('guildMemberRemove', member => db.set(`roles_${member.id}`, member._roles));
