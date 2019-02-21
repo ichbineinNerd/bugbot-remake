@@ -18,14 +18,14 @@ fs.readdir("./commands/", (err, files) => {
 
     jsfile.forEach((f, i) => {
         let props = require(`./commands/${f}`);
-        console.log(`${f} učitan`);
+        console.log(`${f} loaded`);
         bot.commands.set(props.help.name, props);
     });
 
 });
 
 bot.on('ready', () => {
-    console.log(`Ulogovan kao ${bot.user.tag}!`);
+    console.log(`Logged in as ${bot.user.tag}`);
 });
 
 bot.on("message", msg => {
@@ -56,22 +56,3 @@ bot.on('guildMemberAdd', async member => {
     if (!fetched) return;
     member.roles.add(fetched);
 });
-const http = require('http');
-const express = require('express');
-const app = express();
-app.get("/", (request, response) => {
-    response.sendStatus(200);
-});
-
-
-app.listen(process.env.PORT);
-setInterval(() => {
-    http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`)
-    console.log("popio sam jedan bing !");
-}, 60000);
-
-bot.login(config.token).catch(console.error);
-
-
-
-//db.set(`cases`, 0); 
